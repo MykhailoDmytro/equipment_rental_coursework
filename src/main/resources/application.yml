@@ -1,0 +1,50 @@
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    url: jdbc:postgresql://dpg-d1397f15pdvs73dfmqfg-a.oregon-postgres.render.com/equipment_rental_m890
+    username: mihajlov
+    password: dyyRCUowsgzPJ7kXvwhHyJVmQo72XN0M
+    driverClassName: org.postgresql.Driver
+  sql:
+    init:
+      platform: postgres
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+server:
+  servlet:
+    session:
+      timeout: 30m
+      tracking-modes: cookie
+      cookie:
+        name: JSESSIONID
+        http-only: true
+        secure: false
+        max-age: 1800
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: YOUR_GOOGLE_CLIENT_ID
+            client-secret: YOUR_GOOGLE_CLIENT_SECRET
+            scope:
+              - email
+              - profile
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo

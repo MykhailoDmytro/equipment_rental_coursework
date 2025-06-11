@@ -1,0 +1,21 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Форма реєстрації</title>
+</head>
+<body>
+<h1>Реєстрація</h1>
+<form th:action="@{/register}" method="post" th:object="${user}">
+    <label for="username">Ім'я користувача:</label>
+    <input type="text" id="username" th:field="*{username}" required /><br/>
+    <label for="password">Пароль:</label>
+    <input type="password" id="password" th:field="*{password}" required /><br/>
+    <label><input type="radio" th:field="*{role}" value="USER" checked /> Користувач</label>
+    <label><input type="radio" th:field="*{role}" value="ADMIN" /> Адмін</label><br/>
+    <button type="submit">Зареєструватися</button>
+</form>
+<div>
+    <span>Вже є акаунт? <a th:href="@{/login}">Увійти</a></span>
+</div>
+</body>
+</html>
