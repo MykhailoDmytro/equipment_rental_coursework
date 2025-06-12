@@ -24,9 +24,9 @@
 
 <!-- 🔗 Кнопка входу через Google -->
 <div>
-    <form th:action="@{/oauth2/authorization/google}" method="post">
-        <button type="submit">Увійти через Google</button>
-    </form>
+    <a th:href="@{/oauth2/authorization/google}">
+        <button type="button">Увійти через Google</button>
+    </a>
 </div>
 
 <br/>
