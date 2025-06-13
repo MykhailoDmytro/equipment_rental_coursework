@@ -1,8 +1,10 @@
-package ua.opnu.equipment_rental.Security;
+package ua.opnu.equipment_rental.Security.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ua.opnu.equipment_rental.Security.Model.AppUser;
+import ua.opnu.equipment_rental.Security.UserRepository;
 
 @Service
 @RequiredArgsConstructor

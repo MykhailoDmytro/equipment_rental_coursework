@@ -3,6 +3,8 @@ package ua.opnu.equipment_rental.Controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.opnu.equipment_rental.Model.Maintenance;
+import ua.opnu.equipment_rental.DTO.MaintenanceRequestDTO;
+import ua.opnu.equipment_rental.DTO.MaintenanceResponseDTO;
 import ua.opnu.equipment_rental.Service.MaintenanceService;
 
 import java.util.List;
@@ -19,20 +21,22 @@ public class MaintenanceController {
     }
 
     @PostMapping
-    public ResponseEntity<Maintenance> addMaintenance(@RequestBody Maintenance maintenance) {
-        return ResponseEntity.ok(maintenanceService.addMaintenance(maintenance));
+    public ResponseEntity<MaintenanceResponseDTO> addMaintenance(@RequestBody MaintenanceRequestDTO dto) {
+        Maintenance saved = maintenanceService.addMaintenanceFromDTO(dto);
+        return ResponseEntity.ok(new MaintenanceResponseDTO(saved));
     }
 
     @GetMapping("/{equipmentId}")
-    public ResponseEntity<List<Maintenance>> getMaintenanceByEquipment(@PathVariable Long equipmentId) {
-        List<Maintenance> maintenances = maintenanceService.getMaintenanceByEquipment(equipmentId);
-        return ResponseEntity.ok(maintenances);
+    public ResponseEntity<List<MaintenanceResponseDTO>> getMaintenanceByEquipment(@PathVariable Long equipmentId) {
+        List<MaintenanceResponseDTO> maintenanceDTOs = maintenanceService.getMaintenanceByEquipmentDTO(equipmentId);
+        return ResponseEntity.ok(maintenanceDTOs);
     }
 
     @GetMapping("/{id}/detail")
-    public ResponseEntity<Maintenance> getMaintenanceById(@PathVariable Long id) {
+    public ResponseEntity<MaintenanceResponseDTO> getMaintenanceById(@PathVariable Long id) {
         Optional<Maintenance> maintenance = maintenanceService.getMaintenanceById(id);
-        return maintenance.map(ResponseEntity::ok)
+        return maintenance
+                .map(m -> ResponseEntity.ok(new MaintenanceResponseDTO(m)))
                 .orElse(ResponseEntity.notFound().build());
     }
 

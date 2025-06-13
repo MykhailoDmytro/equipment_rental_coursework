@@ -1,9 +1,63 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Помилка</title>
+    <meta charset="UTF-8">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700&display=swap');
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to right, #1f1c2c, #928dab);
+            overflow: hidden;
+            color: #fff;
+            text-align: center;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.2);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px 50px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #ff7575; /* A soft red for error */
+        }
+
+        p {
+            font-size: 16px;
+            font-weight: 300;
+        }
+
+        a {
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.7);
+            transition: all 0.2s ease;
+        }
+
+        a:hover {
+            border-bottom-style: solid;
+        }
+    </style>
 </head>
 <body>
-<h2>Сталась помилка</h2>
-<p>Спробуйте повернутись на <a th:href="@{/login}">сторінку входу</a>.</p>
+<div class="container">
+    <h2>Сталась помилка</h2>
+    <p>Спробуйте повернутись на <a th:href="@{/login}">сторінку входу</a>.</p>
+</div>
 </body>
 </html>

@@ -2,6 +2,7 @@ package ua.opnu.equipment_rental.Service;
 
 import org.springframework.stereotype.Service;
 import ua.opnu.equipment_rental.Model.Equipment;
+import ua.opnu.equipment_rental.DTO.EquipmentDTO;
 import ua.opnu.equipment_rental.Repository.EquipmentRepository;
 
 import java.time.LocalDate;
@@ -17,26 +18,28 @@ public class EquipmentService {
         this.equipmentRepository = equipmentRepository;
     }
 
-    public Equipment addEquipment(Equipment equipment) {
-        return equipmentRepository.save(equipment);
+    public EquipmentDTO addEquipment(Equipment equipment) {
+        return toDTO(equipmentRepository.save(equipment));
     }
 
-    public List<Equipment> getAllEquipment() {
-        return equipmentRepository.findAll();
+    public List<EquipmentDTO> getAllEquipment() {
+        return equipmentRepository.findAll().stream()
+                .map(this::toDTO)
+                .toList();
     }
 
-    public Optional<Equipment> getEquipmentById(Long id) {
-        return equipmentRepository.findById(id);
+    public Optional<EquipmentDTO> getEquipmentById(Long id) {
+        return equipmentRepository.findById(id).map(this::toDTO);
     }
 
-    public Equipment updateEquipment(Long id, Equipment updatedEquipment) {
+    public EquipmentDTO updateEquipment(Long id, Equipment updatedEquipment) {
         return equipmentRepository.findById(id)
                 .map(equipment -> {
                     equipment.setName(updatedEquipment.getName());
                     equipment.setType(updatedEquipment.getType());
                     equipment.setDailyRate(updatedEquipment.getDailyRate());
                     equipment.setAvailability(updatedEquipment.getAvailability());
-                    return equipmentRepository.save(equipment);
+                    return toDTO(equipmentRepository.save(equipment));
                 })
                 .orElseThrow(() -> new RuntimeException("Equipment not found with id " + id));
     }
@@ -45,7 +48,29 @@ public class EquipmentService {
         equipmentRepository.deleteById(id);
     }
 
-    public List<Equipment> getAvailableEquipmentOnDate(LocalDate date) {
-        return equipmentRepository.findAvailableOnDate(date);
+    public List<EquipmentDTO> getAvailableEquipmentOnDate(LocalDate date) {
+        return equipmentRepository.findAvailableOnDate(date).stream()
+                .map(this::toDTO)
+                .toList();
+    }
+
+    public EquipmentDTO toDTO(Equipment equipment) {
+        return new EquipmentDTO(
+                equipment.getId(),
+                equipment.getName(),
+                equipment.getType(),
+                equipment.getDailyRate(),
+                equipment.getAvailability()
+        );
+    }
+
+    public Equipment toEntity(EquipmentDTO dto) {
+        Equipment equipment = new Equipment();
+        equipment.setId(dto.id());
+        equipment.setName(dto.name());
+        equipment.setType(dto.type());
+        equipment.setDailyRate(dto.dailyRate());
+        equipment.setAvailability(dto.availability());
+        return equipment;
     }
 }

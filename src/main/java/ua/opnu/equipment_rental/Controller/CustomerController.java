@@ -3,6 +3,7 @@ package ua.opnu.equipment_rental.Controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.opnu.equipment_rental.Model.Customer;
+import ua.opnu.equipment_rental.DTO.CustomerDTO;
 import ua.opnu.equipment_rental.Service.CustomerService;
 
 import java.util.List;
@@ -19,27 +20,28 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
+    public ResponseEntity<CustomerDTO> addCustomer(@RequestBody CustomerDTO customerDTO) {
+        Customer customer = customerService.toEntity(customerDTO);
         return ResponseEntity.ok(customerService.addCustomer(customer));
     }
 
     @GetMapping
-    public ResponseEntity<List<Customer>> getAllCustomers() {
+    public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
         return ResponseEntity.ok(customerService.getAllCustomers());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) {
-        Optional<Customer> customer = customerService.getCustomerById(id);
+    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Long id) {
+        Optional<CustomerDTO> customer = customerService.getCustomerById(id);
         return customer.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Customer> updateCustomer(@PathVariable Long id, @RequestBody Customer updatedCustomer) {
+    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Long id, @RequestBody CustomerDTO customerDTO) {
         try {
-            Customer customer = customerService.updateCustomer(id, updatedCustomer);
-            return ResponseEntity.ok(customer);
+            Customer updated = customerService.toEntity(customerDTO);
+            return ResponseEntity.ok(customerService.updateCustomer(id, updated));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }

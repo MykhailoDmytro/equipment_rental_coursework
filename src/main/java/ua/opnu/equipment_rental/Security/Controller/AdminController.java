@@ -1,4 +1,4 @@
-package ua.opnu.equipment_rental.Security;
+package ua.opnu.equipment_rental.Security.Controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

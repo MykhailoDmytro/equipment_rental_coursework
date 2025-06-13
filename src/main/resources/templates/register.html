@@ -2,20 +2,163 @@
 <head>
     <meta charset="UTF-8">
     <title>Форма реєстрації</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700&display=swap');
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+            overflow: hidden;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            width: 380px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            color: #fff;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        label {
+            font-weight: 400;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            padding: 14px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: 'Manrope', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .role-selection {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .role-selection label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        input[type="radio"] {
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: rgba(255, 255, 255, 0.2);
+            margin: 0;
+            width: 1.15em;
+            height: 1.15em;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            display: grid;
+            place-content: center;
+        }
+
+        input[type="radio"]::before {
+            content: "";
+            width: 0.65em;
+            height: 0.65em;
+            border-radius: 50%;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            background-color: #fff;
+        }
+
+        input[type="radio"]:checked::before {
+            transform: scale(1);
+        }
+
+        button {
+            background: rgba(255, 255, 255, 0.9);
+            color: #84fab0;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .link-container {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .link-container a {
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-<h1>Реєстрація</h1>
-<form th:action="@{/register}" method="post" th:object="${user}">
-    <label for="username">Ім'я користувача:</label>
-    <input type="text" id="username" th:field="*{username}" required /><br/>
-    <label for="password">Пароль:</label>
-    <input type="password" id="password" th:field="*{password}" required /><br/>
-    <label><input type="radio" th:field="*{role}" value="USER" checked /> Користувач</label>
-    <label><input type="radio" th:field="*{role}" value="ADMIN" /> Адмін</label><br/>
-    <button type="submit">Зареєструватися</button>
-</form>
-<div>
-    <span>Вже є акаунт? <a th:href="@{/login}">Увійти</a></span>
+<div class="container">
+    <h1>Створити Акаунт</h1>
+    <form th:action="@{/register}" method="post" th:object="${user}">
+        <label for="username">Ім'я користувача</label>
+        <input type="text" id="username" th:field="*{username}" required />
+
+        <label for="password">Пароль</label>
+        <input type="password" id="password" th:field="*{password}" required />
+
+        <div class="role-selection">
+            <label><input type="radio" th:field="*{role}" value="USER" checked /> Користувач</label>
+            <label><input type="radio" th:field="*{role}" value="ADMIN" /> Адмін</label>
+        </div>
+
+        <button type="submit">Зареєструватися</button>
+    </form>
+    <div class="link-container">
+        <span>Вже є акаунт? <a th:href="@{/login}">Увійти</a></span>
+    </div>
 </div>
 </body>
 </html>

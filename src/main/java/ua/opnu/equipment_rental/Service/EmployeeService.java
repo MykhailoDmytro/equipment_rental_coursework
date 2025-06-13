@@ -2,6 +2,7 @@ package ua.opnu.equipment_rental.Service;
 
 import org.springframework.stereotype.Service;
 import ua.opnu.equipment_rental.Model.Employee;
+import ua.opnu.equipment_rental.DTO.EmployeeDTO;
 import ua.opnu.equipment_rental.Repository.EmployeeRepository;
 
 import java.util.List;
@@ -16,29 +17,43 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-    public Employee addEmployee(Employee employee) {
-        return employeeRepository.save(employee);
+    public EmployeeDTO addEmployee(Employee employee) {
+        return toDTO(employeeRepository.save(employee));
     }
 
-    public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
+    public List<EmployeeDTO> getAllEmployees() {
+        return employeeRepository.findAll().stream()
+                .map(this::toDTO)
+                .toList();
     }
 
-    public Optional<Employee> getEmployeeById(Long id) {
-        return employeeRepository.findById(id);
+    public Optional<EmployeeDTO> getEmployeeById(Long id) {
+        return employeeRepository.findById(id).map(this::toDTO);
     }
 
-    public Employee updateEmployee(Long id, Employee updatedEmployee) {
+    public EmployeeDTO updateEmployee(Long id, Employee updatedEmployee) {
         return employeeRepository.findById(id)
                 .map(employee -> {
                     employee.setName(updatedEmployee.getName());
                     employee.setPosition(updatedEmployee.getPosition());
-                    return employeeRepository.save(employee);
+                    return toDTO(employeeRepository.save(employee));
                 })
                 .orElseThrow(() -> new RuntimeException("Employee not found with id " + id));
     }
 
     public void deleteEmployee(Long id) {
         employeeRepository.deleteById(id);
+    }
+
+    public EmployeeDTO toDTO(Employee employee) {
+        return new EmployeeDTO(employee.getId(), employee.getName(), employee.getPosition());
+    }
+
+    public Employee toEntity(EmployeeDTO dto) {
+        Employee employee = new Employee();
+        employee.setId(dto.id());
+        employee.setName(dto.name());
+        employee.setPosition(dto.position());
+        return employee;
     }
 }

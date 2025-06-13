@@ -1,4 +1,4 @@
-package ua.opnu.equipment_rental.Security;
+package ua.opnu.equipment_rental.Security.JWT;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

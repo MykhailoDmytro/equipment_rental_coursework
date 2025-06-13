@@ -1,4 +1,4 @@
-package ua.opnu.equipment_rental.Security;
+package ua.opnu.equipment_rental.Security.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,6 +8,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ua.opnu.equipment_rental.Security.Model.AppUser;
+import ua.opnu.equipment_rental.Security.JWT.AuthTokenGenerator;
+import ua.opnu.equipment_rental.Security.UserRepository;
 
 @Controller
 public class AuthController {

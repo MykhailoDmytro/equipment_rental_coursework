@@ -3,6 +3,7 @@ package ua.opnu.equipment_rental.Controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.opnu.equipment_rental.Model.Equipment;
+import ua.opnu.equipment_rental.DTO.EquipmentDTO;
 import ua.opnu.equipment_rental.Service.EquipmentService;
 
 import java.time.LocalDate;
@@ -20,27 +21,28 @@ public class EquipmentController {
     }
 
     @PostMapping
-    public ResponseEntity<Equipment> addEquipment(@RequestBody Equipment equipment) {
+    public ResponseEntity<EquipmentDTO> addEquipment(@RequestBody EquipmentDTO equipmentDTO) {
+        Equipment equipment = equipmentService.toEntity(equipmentDTO);
         return ResponseEntity.ok(equipmentService.addEquipment(equipment));
     }
 
     @GetMapping
-    public ResponseEntity<List<Equipment>> getAllEquipment() {
+    public ResponseEntity<List<EquipmentDTO>> getAllEquipment() {
         return ResponseEntity.ok(equipmentService.getAllEquipment());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Equipment> getEquipmentById(@PathVariable Long id) {
-        Optional<Equipment> equipment = equipmentService.getEquipmentById(id);
+    public ResponseEntity<EquipmentDTO> getEquipmentById(@PathVariable Long id) {
+        Optional<EquipmentDTO> equipment = equipmentService.getEquipmentById(id);
         return equipment.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Equipment> updateEquipment(@PathVariable Long id, @RequestBody Equipment updatedEquipment) {
+    public ResponseEntity<EquipmentDTO> updateEquipment(@PathVariable Long id, @RequestBody EquipmentDTO equipmentDTO) {
         try {
-            Equipment equipment = equipmentService.updateEquipment(id, updatedEquipment);
-            return ResponseEntity.ok(equipment);
+            Equipment updated = equipmentService.toEntity(equipmentDTO);
+            return ResponseEntity.ok(equipmentService.updateEquipment(id, updated));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
@@ -53,9 +55,8 @@ public class EquipmentController {
     }
 
     @GetMapping("/available")
-    public ResponseEntity<List<Equipment>> getAvailableEquipmentOnDate(@RequestParam("date") String date) {
+    public ResponseEntity<List<EquipmentDTO>> getAvailableEquipmentOnDate(@RequestParam("date") String date) {
         LocalDate localDate = LocalDate.parse(date);
-        List<Equipment> available = equipmentService.getAvailableEquipmentOnDate(localDate);
-        return ResponseEntity.ok(available);
+        return ResponseEntity.ok(equipmentService.getAvailableEquipmentOnDate(localDate));
     }
 }

@@ -1,4 +1,4 @@
-package ua.opnu.equipment_rental.Security;
+package ua.opnu.equipment_rental.Security.Model;
 
 import jakarta.persistence.*;
 import lombok.*;

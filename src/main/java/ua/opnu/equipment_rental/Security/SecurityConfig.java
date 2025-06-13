@@ -13,6 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ua.opnu.equipment_rental.Security.JWT.AuthTokenFilter;
+import ua.opnu.equipment_rental.Security.Service.AppDetailsService;
+import ua.opnu.equipment_rental.Security.Service.CustomOAuth2Service;
 
 @Configuration
 @EnableWebSecurity

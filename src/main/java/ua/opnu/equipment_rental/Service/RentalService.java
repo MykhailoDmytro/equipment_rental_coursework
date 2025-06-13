@@ -1,19 +1,19 @@
 package ua.opnu.equipment_rental.Service;
 
 import org.springframework.stereotype.Service;
-import ua.opnu.equipment_rental.Model.Customer;
-import ua.opnu.equipment_rental.Model.Employee;
-import ua.opnu.equipment_rental.Model.Equipment;
-import ua.opnu.equipment_rental.Model.Rental;
+import ua.opnu.equipment_rental.DTO.EquipmentDTO;
+import ua.opnu.equipment_rental.DTO.RentalDTO;
+import ua.opnu.equipment_rental.DTO.RentalRequestDTO;
+import ua.opnu.equipment_rental.Model.*;
 import ua.opnu.equipment_rental.Repository.CustomerRepository;
 import ua.opnu.equipment_rental.Repository.EmployeeRepository;
 import ua.opnu.equipment_rental.Repository.EquipmentRepository;
 import ua.opnu.equipment_rental.Repository.RentalRepository;
-import ua.opnu.equipment_rental.Model.RentalRequestDTO;
 
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RentalService {
@@ -102,9 +102,53 @@ public class RentalService {
                 .sum();
     }
 
-    public List<Equipment> getMostRentedEquipment() {
+    public RentalDTO toDTO(Rental rental) {
+        return new RentalDTO(
+                rental.getId(),
+                rental.getEquipment().getId(),
+                rental.getEquipment().getName(),
+                rental.getCustomer().getId(),
+                rental.getCustomer().getName(),
+                rental.getEmployee().getId(),
+                rental.getEmployee().getName(),
+                rental.getStartDate(),
+                rental.getEndDate(),
+                rental.getReturned()
+        );
+    }
+
+    public Rental toEntity(RentalDTO dto) {
+        Equipment equipment = equipmentRepository.findById(dto.getEquipmentId())
+                .orElseThrow(() -> new RuntimeException("Equipment not found"));
+        Customer customer = customerRepository.findById(dto.getCustomerId())
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+        Employee employee = employeeRepository.findById(dto.getEmployeeId())
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+
+        return Rental.builder()
+                .id(dto.getId())
+                .equipment(equipment)
+                .customer(customer)
+                .employee(employee)
+                .startDate(dto.getStartDate())
+                .endDate(dto.getEndDate())
+                .returned(dto.getReturned())
+                .build();
+    }
+
+    public List<EquipmentDTO> getMostRentedEquipmentDTO() {
         List<Long> equipmentIds = rentalRepository.findMostRentedEquipment();
-        return equipmentRepository.findAllById(equipmentIds);
+        List<Equipment> equipmentList = equipmentRepository.findAllById(equipmentIds);
+
+        return equipmentList.stream()
+                .map(e -> new EquipmentDTO(
+                        e.getId(),
+                        e.getName(),
+                        e.getType(),
+                        e.getDailyRate(),
+                        e.getAvailability()
+                ))
+                .collect(Collectors.toList());
     }
 
     public List<Rental> getOverdueRentals() {

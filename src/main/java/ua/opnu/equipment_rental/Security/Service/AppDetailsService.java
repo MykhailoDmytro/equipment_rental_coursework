@@ -1,9 +1,10 @@
-package ua.opnu.equipment_rental.Security;
+package ua.opnu.equipment_rental.Security.Service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import ua.opnu.equipment_rental.Security.UserRepository;
 
 @Component
 public class AppDetailsService implements UserDetailsService {

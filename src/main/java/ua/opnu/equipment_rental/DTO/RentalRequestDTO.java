@@ -1,4 +1,4 @@
-package ua.opnu.equipment_rental.Model;
+package ua.opnu.equipment_rental.DTO;
 
 import lombok.Data;
 import java.time.LocalDate;
@@ -12,3 +12,4 @@ public class RentalRequestDTO {
     private LocalDate endDate;
     private Boolean returned;
 }
+
